@@ -28,7 +28,13 @@ async function run() {
     const database = client.db("AllReviewsDB");
     const allReviews = database.collection('AllReviews');
 
-    app.post('/review', async(req, res)=> {
+    app.get('/reviews', async(req, res)=> {
+      const cursor = allReviews.find();
+      const result = await cursor.toArray();
+      res.send(result);
+    })
+
+    app.post('/reviews', async(req, res)=> {
       const notunReview = req.body;
       const result = await allReviews.insertOne(notunReview);
       res.send(result);
