@@ -25,9 +25,13 @@ async function run() {
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
 
+    const database = client.db("AllReviewsDB");
+    const allReviews = database.collection('AllReviews');
+
     app.post('/review', async(req, res)=> {
       const notunReview = req.body;
-      console.log(notunReview);
+      const result = await allReviews.insertOne(notunReview);
+      res.send(result);
     })
 
 
