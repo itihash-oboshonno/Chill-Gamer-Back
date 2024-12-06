@@ -27,6 +27,7 @@ async function run() {
 
     const database = client.db("AllReviewsDB");
     const allReviews = database.collection('AllReviews');
+    const wishList = database.collection('WishList');
 
     app.get('/reviews', async(req, res)=> {
       const cursor = allReviews.find();
@@ -41,9 +42,21 @@ async function run() {
       res.send(review);
     })
 
+    app.get('/wishlist', async(req, res)=> {
+      const cursor = wishList.find();
+      const result = await cursor.toArray();
+      res.send(result);
+    })
+
     app.post('/reviews', async(req, res)=> {
       const notunReview = req.body;
       const result = await allReviews.insertOne(notunReview);
+      res.send(result);
+    })
+
+    app.post('/wishlist', async(req, res)=> {
+      const wishItem = req.body;
+      const result = await wishList.insertOne(wishItem);
       res.send(result);
     })
 
