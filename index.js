@@ -43,6 +43,12 @@ async function run() {
     })
 
     app.get('/wishlist', async(req, res)=> {
+      const cursor = wishList.find();
+      const result = await cursor.toArray();
+      res.send(result);
+    })
+
+    app.get('/mywatchlist', async(req, res)=> {
       const {searchParams} = req.query;
       let option = {wishListsUser: searchParams};
       const cursor = wishList.find(option);
