@@ -35,6 +35,14 @@ async function run() {
       res.send(result);
     })
 
+    app.get('/myreviews', async(req, res)=> {
+      const {searchParams} = req.query;
+      let option = {email: searchParams};
+      const cursor = allReviews.find(option);
+      const result = await cursor.toArray();
+      res.send(result);
+    })
+
     app.get('/reviews/:id', async(req, res)=> {
       const id = req.params.id;
       const query = {_id: new ObjectId(id)};
