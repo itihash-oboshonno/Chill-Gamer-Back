@@ -37,13 +37,15 @@ async function run() {
 
     app.get('/reviews/:id', async(req, res)=> {
       const id = req.params.id;
-      const query = {_id: new ObjectId(id)}
+      const query = {_id: new ObjectId(id)};
       const review = await allReviews.findOne(query);
       res.send(review);
     })
 
     app.get('/wishlist', async(req, res)=> {
-      const cursor = wishList.find();
+      const {searchParams} = req.query;
+      let option = {wishListsUser: searchParams};
+      const cursor = wishList.find(option);
       const result = await cursor.toArray();
       res.send(result);
     })
