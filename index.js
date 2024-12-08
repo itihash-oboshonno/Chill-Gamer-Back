@@ -42,6 +42,27 @@ async function run() {
       res.send(result);
     })
 
+    // sort and filter for allreviews page
+    app.get('/reviewsforall', async(req, res)=> {
+      const sortBy = req.query.sortBy || 'none';
+      const filterBy =  req.query.filterBy || 'none';
+      // filter er jonne
+      let query = {};
+      if (filterBy !== 'none') {
+        query = { genre: filterBy };
+      }
+      // sort er jonne
+      let sort = {};
+      if (sortBy === 'rating') {
+        sort = { rating: 1 };
+      } else if (sortBy === 'year') {
+        sort = { year: 1 };
+      }
+
+      const data = await allReviews.find(query).sort(sort).toArray();
+      res.json(data);
+    })
+
     app.get('/myreviews', async(req, res)=> {
       const {searchParams} = req.query;
       let option = {email: searchParams};
