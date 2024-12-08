@@ -36,6 +36,12 @@ async function run() {
       res.send(result);
     })
 
+    app.get('/topreviews', async(req, res)=> {
+      const cursor = allReviews.find().sort({ rating: 1 }).limit(6);
+      const result = await cursor.toArray();
+      res.send(result);
+    })
+
     app.get('/myreviews', async(req, res)=> {
       const {searchParams} = req.query;
       let option = {email: searchParams};
