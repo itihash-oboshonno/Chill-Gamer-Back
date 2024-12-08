@@ -28,6 +28,7 @@ async function run() {
     const database = client.db("AllReviewsDB");
     const allReviews = database.collection('AllReviews');
     const wishList = database.collection('WishList');
+    const userColl = database.collection('UserColl');
 
     app.get('/reviews', async(req, res)=> {
       const cursor = allReviews.find();
@@ -73,6 +74,33 @@ async function run() {
     app.post('/wishlist', async(req, res)=> {
       const wishItem = req.body;
       const result = await wishList.insertOne(wishItem);
+      res.send(result);
+    })
+
+    app.post('/usercoll', async(req, res)=> {
+      const user = req.body;
+      const result = await userColl.insertOne(user);
+      res.send(result);
+    })
+
+    app.put('/reviews/:id', async(req, res)=> {
+      const id = req.params.id;
+      const filter = { _id: new ObjectId(id) };
+      const options = { upsert: true };
+      const updatedRev = req.body;
+      const theNewRev = {
+        $set: {
+          title: updatedRev.title,
+          image: updatedRev.image,
+          review: updatedRev.review,
+          rating: updatedRev.rating,
+          year: updatedRev.year,
+          genre: updatedRev.genre,
+          email: updatedRev.email,
+          userName: updatedRev.userName,
+        }
+      }
+      const result = await allReviews.updateOne(filter, theNewRev, options);
       res.send(result);
     })
 
