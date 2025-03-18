@@ -37,7 +37,7 @@ async function run() {
     })
 
     app.get('/topreviews', async(req, res)=> {
-      const cursor = allReviews.find().sort({ rating: 1 }).limit(6);
+      const cursor = allReviews.find().sort({ rating: -1 }).limit(6);
       const result = await cursor.toArray();
       res.send(result);
     })
@@ -54,9 +54,9 @@ async function run() {
       // sort er jonne
       let sort = {};
       if (sortBy === 'rating') {
-        sort = { rating: 1 };
+        sort = { rating: -1 };
       } else if (sortBy === 'year') {
-        sort = { year: 1 };
+        sort = { year: -1 };
       }
 
       const data = await allReviews.find(query).sort(sort).toArray();
